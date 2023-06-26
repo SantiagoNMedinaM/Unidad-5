@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="/static/css/estilos.css">
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        body {
+            background-color: #EAE2D9; /* Tonos marrones o tierra */
+            color: #444444; /* Color de texto más oscuro */
+            font-family: Arial, sans-serif;
+        }
+
+        .myDiv {
+            background-color: #C7BFB8; /* Tonos marrones o tierra */
+            color: #EAE2D9;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .myDiv a {
+            color: #EAE2D9;
+            text-decoration: none;
+        }
+
+        .myDiv a:hover {
+            color: #aaaaaa;
+        }
+    </style>
+</head>
+<body>
+    {% block content %}{% endblock %}
+</body>
+</html>

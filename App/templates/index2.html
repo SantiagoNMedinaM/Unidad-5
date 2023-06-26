@@ -1,0 +1,78 @@
+{% extends 'base_templates.html' %} 
+{% block title %} Error {% endblock %} 
+{% block content %} 
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width">
+ <title>Colegio San Miguel</title>
+ 
+ <style>
+     body {
+         background-color: #EAE2D9;
+         color: #444444;
+         font-family: Arial, sans-serif;
+         margin: 0;
+         padding: 0;
+     }
+     
+     header {
+         background-color: #EAE2D9;
+         padding: 20px;
+         text-align: center;
+     }
+     
+     h1 {
+         margin: 0;
+         font-size: 28px;
+     }
+     
+     section {
+         padding: 20px;
+         text-align: center;
+     }
+     
+     nav ul {
+         list-style-type: none;
+         padding: 0;
+     }
+     
+     nav ul li {
+         margin-bottom: 10px;
+     }
+     
+     nav ul li a {
+         color: #694523;
+         text-decoration: none;
+     }
+     
+     footer {
+         background-color: #EAE2D9;
+         padding: 10px;
+         text-align: center;
+         position: fixed;
+         bottom: 0;
+         width: 100%;
+     }
+     
+     footer p {
+         margin: 1;
+     }
+ </style>
+</head>
+<header>
+    <h1>Colegio San Miguel</h1><br><br><br><br>
+   </header>
+<body>
+<section>
+    <h2>Se ha iniciado sesión correctamente</h2>
+    <br><br>
+    <a href="{{ url_for('iniciar_sesion') }}">Cerrar Sesión</a>
+</section>
+<footer>
+    <p>Domingo Faustino Sarmiento Nte. 325 - (0264) 4212250</p>
+</footer>
+</body>
+</html>
+{% endblock %}
