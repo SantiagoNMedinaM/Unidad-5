@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import hashlib
 
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 app.config.from_pyfile('config.py')
 
 from clases import db
@@ -54,33 +54,36 @@ def index2():
     return render_template('index2.html')
 @app.route('/registrar_asistencia', methods=['GET', 'POST'])
 def registrar_asistencia():
-    if 'userid' in flask_session:
-        user_id = flask_session['userid']
-        actual = Preceptor.query.get(user_id)
         if request.method == 'POST':
-            if 'curso' not in request.form:
-                return render_template('registrar_asistencia.html', cursos=Curso.query.all(), curso_selecc=None, preceptor=actual)
+            if not flask_session['curso']:
+                curso = request.form['curso']
+                flask_session['curso'] = curso
+                curso_selecc = Curso.query.filter_by(id = curso).first()
+                estudiantes = Estudiante.query.filter_by(idcurso = curso_selecc.id).all()
+                estudiantes.sort() 
+                return render_template('cargar_estudiantes.html', estudiantes = estudiantes, curso_selecc = curso_selecc)
             else:
-                curso_id = request.form['curso']
-                curso_selecc = Curso.query.get(curso_id)
+                curso_selecc = Curso.query.filter_by(id = flask_session['curso']).first()
                 estudiantes = Estudiante.query.filter_by(idcurso=curso_selecc.id).all()
                 estudiantes.sort()
-                render_template('registrar_asistencia.html', cursos=None, curso_selecc=curso_selecc, preceptor=actual, estudiantes=estudiantes)
                 for estudiante in estudiantes:
-                    clase = request.form.get('clase')
+                    clase = request.form.get(f'clase-{estudiante.id}')
                     print(clase)
-                    asistenciaa = request.form.get('asistio')
+                    asistenciaa = request.form.get(f'asistio-{estudiante.id}')
                     print(asistenciaa)
-                    justificacion = request.form.get('justificacion')
+                    justificacion = request.form.get(f'justificacion-{estudiante.id}')
                     print(justificacion)
                     nueva_asistencia = Asistencia(fecha=datetime.today(),codigoclase=clase,asistio=asistenciaa,justificacion=justificacion,idestudiante=estudiante.id)
                     db.session.add(nueva_asistencia)
                 db.session.commit()
-                return render_template('registrar_asistencia.html', cursos=None, curso_selecc=curso_selecc, preceptor=actual, estudiantes=estudiantes)
+                return render_template('registro.html', msg = "Las asistencias han sido cargadas.")
+
+                
         else:
+            flask_session['curso'] = None
+            actual = Preceptor.query.filter_by(id=flask_session['id']).first()
             return render_template('registrar_asistencia.html', cursos=Curso.query.all(), curso_selecc=None, preceptor=actual)
-    else:
-        return render_template('error.html', error='Debe iniciar sesión como preceptor para acceder a esta página.')
+    
 
 
 @app.route('/obtener_informe', methods=['GET', 'POST'])

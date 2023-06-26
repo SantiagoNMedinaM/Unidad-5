@@ -79,32 +79,44 @@
     
     <div class="container">
         <h1>Colegio San Miguel</h1>
-        <h2>Asistencias del dia</h2>
+        <h2>Registrar asistencias</h2>
         <hr/>
         <form action="{{ request.path }}" method="post">
-            {% if cursos is not none %}
-                <label for="cursos">Seleccione el curso deseado</label><br>
-                <select id="cursos" name="curso" width="500px">
-                    {% for curso in cursos %}
-                        {% if curso.idpreceptor == preceptor.id %}
-                            <option value="{{ curso.id }}">{{ curso.anio }} {{ curso.division }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-                <br> <br>
-                <input class="button1" type="submit" value="Ir al curso">
-            {% endif %}
+                    <h3>Estudiantes del curso: {{ curso_selecc.anio }}° Div:{{ curso_selecc.division }}</h3>
+                    <table>
+                        <tr>
+                            <th>Apellido</th>
+                            <th>Nombre</th>
+                            <th>Clase</th>
+                            <th>Asistencia</th>
+                            <th>Justificacion</th>
+                        </tr>
+                        {% for estudiante in estudiantes %}
+                            <tr>
+                                <td>{{ estudiante.apellido }}</td>
+                                <td>{{ estudiante.nombre }}</td>
+                                <td>
+                                    <select name="clase-{{ estudiante.id }}">
+                                        <option value="1">Clase de Aula</option>
+                                        <option value="2">Ed. Fisica</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="asistio-{{ estudiante.id }}">
+                                        <option value="s">Presente</option>
+                                        <option value="n">Ausente</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" name="justificacion-{{ estudiante.id }}"></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <br>
+                        <input class="button1" type="submit" value="Guardar asistencias">
+                    </form>
         </form>
     </div>
     <div class="myDiv">
         <br><br><a href="{{ url_for('index') }}">Inicio</a><br><br>
     </div>
     {% endblock %}
-
-    
-    
-    
-    
-    
-    
-    
